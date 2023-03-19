@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Practice2PersonProceed.Views.EnterEverythingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Practice2PersonProceed.Tools.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="360" d:DesignWidth="550">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <controls:TextBoxWithCaption x:Name="TbName" Grid.Row="0" Grid.Column="0" Caption="Name" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></controls:TextBoxWithCaption>
+        <controls:TextBoxWithCaption x:Name="TbSurname" Grid.Row="1" Grid.Column="0" Caption="Surname" Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></controls:TextBoxWithCaption>
+        <controls:TextBoxWithCaption x:Name="TbEmail" Grid.Row="2" Grid.Column="0" Caption="Email" Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></controls:TextBoxWithCaption>
+        <controls:DatePickerWithCaption x:Name="DatePicker" Grid.Row="3" Grid.Column="0" Caption="Date of birth" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></controls:DatePickerWithCaption>
+        <Button Name="BProceed" Grid.Row="4" Grid.Column="0" Content="Proceed" Height="40" Margin="10" FontSize="20" Command ="{Binding ProceedCommand}"></Button>
+    </Grid>
+</UserControl>
