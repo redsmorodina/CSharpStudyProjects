@@ -1,7 +1,11 @@
 ﻿using Practice2PersonProceed.Models;
 using System;
+using System.CodeDom;
 using System.Threading;
 using System.Windows;
+using Practice2PersonProceed.Exceptions;
+using Practice2PersonProceed.Exeptions;
+using System.Text.RegularExpressions;
 
 namespace Practice2PersonProceed.ViewModels
 {
@@ -69,23 +73,34 @@ namespace Practice2PersonProceed.ViewModels
 
         private void Proceed()
         {
-            if (!ValidateData())
+            try
             {
-                MessageBox.Show("Wrong date selected.");
-                return;
-            }
+                ValidateData();
 
-            Person person = new(_user.Name, _user.Surname, _user.Email, _user.DateOfBirth);
-            Thread.Sleep(500);
-            MessageBox.Show($"Name: {person.Name}\n" +
-                            $"Surname: {person.Surname}\n" +
-                            $"Email: {person.Email}\n" +
-                            $"Date of birth: {person.DateOfBirth.ToString("dd/MM/yyyy")}\n" +
-                            $"Is Adult: {person.IsAdult}\n" +
-                            $"Sun Sign: {person.SunSign}\n" +
-                            $"Chinese Sign: {person.ChineseSign}\n" +
-                            $"Is Birthday: {person.IsBirthday}\n");
-            if (person.IsBirthday) MessageBox.Show("HAPPY BIRTHDAY!");
+                Person person = new(_user.Name, _user.Surname, _user.Email, _user.DateOfBirth);
+                Thread.Sleep(2000);
+                MessageBox.Show($"Name: {person.Name}\n" +
+                                $"Surname: {person.Surname}\n" +
+                                $"Email: {person.Email}\n" +
+                                $"Date of birth: {person.DateOfBirth.ToString("dd/MM/yyyy")}\n" +
+                                $"Is Adult: {person.IsAdult}\n" +
+                                $"Sun Sign: {person.SunSign}\n" +
+                                $"Chinese Sign: {person.ChineseSign}\n" +
+                                $"Is Birthday: {person.IsBirthday}\n");
+                if (person.IsBirthday) MessageBox.Show("HAPPY BIRTHDAY!");
+            }
+            catch(PersonIsNotBornException)
+            {
+                MessageBox.Show("Future date was selected.");
+            }
+            catch (PersonIsTooOldException)
+            {
+                MessageBox.Show("Too age-old date was selected.");
+            }
+            catch (WrongEmilFormatException)
+            {
+                MessageBox.Show("Wrong email format was entered.");
+            }
         }
         
         private bool CanExecute(object obj)
@@ -94,10 +109,12 @@ namespace Practice2PersonProceed.ViewModels
                    !String.IsNullOrWhiteSpace(_user.Email) && !_user.DateOfBirth.Equals(DateTime.Today.AddDays(1));
         }
 
-        private bool ValidateData()
+        private void ValidateData()
         {
-            return _user.DateOfBirth <= DateTime.Today &&
-                   DateTime.Today.Year - _user.DateOfBirth.Year <= 135;
+            if(_user.DateOfBirth > DateTime.Today) throw new PersonIsNotBornException();
+            if(DateTime.Today.Year - _user.DateOfBirth.Year > 135) throw new PersonIsTooOldException();
+            Regex rgx = new Regex("[A-Za-z.-]+@[A-Za-z]+[.][A-Za-z]+");
+            if (!rgx.IsMatch(_user.Email)) throw new WrongEmilFormatException();
         }
     }
 }
