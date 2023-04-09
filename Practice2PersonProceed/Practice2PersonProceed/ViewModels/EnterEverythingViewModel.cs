@@ -97,7 +97,7 @@ namespace Practice2PersonProceed.ViewModels
             {
                 MessageBox.Show("Too age-old date was selected.");
             }
-            catch (WrongEmilFormatException)
+            catch (WrongEmailFormatException)
             {
                 MessageBox.Show("Wrong email format was entered.");
             }
@@ -114,7 +114,7 @@ namespace Practice2PersonProceed.ViewModels
             if(_user.DateOfBirth > DateTime.Today) throw new PersonIsNotBornException();
             if(DateTime.Today.Year - _user.DateOfBirth.Year > 135) throw new PersonIsTooOldException();
             Regex rgx = new Regex("[A-Za-z.-]+@[A-Za-z]+[.][A-Za-z]+");
-            if (!rgx.IsMatch(_user.Email)) throw new WrongEmilFormatException();
+            if (!rgx.IsMatch(_user.Email)) throw new WrongEmailFormatException();
         }
     }
 }
